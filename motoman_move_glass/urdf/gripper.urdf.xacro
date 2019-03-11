@@ -1,0 +1,35 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://www.ros.org/wiki/xacro"
+       name="glass_panel" >
+    <xacro:macro name="glass_panel" params="parent">
+        <joint name="glass_joint" type="fixed">
+            <origin xyz="0 0 0" rpy="0 0 0" />
+            <parent link="${parent}"/>
+            <child link="glass_link"/>
+        </joint>
+
+        <link name="glass_link">
+            <inertial>
+                <mass value="0.01" />
+                <origin xyz="0 0 0" />
+                <inertia ixx="0.001" ixy="0.0" ixz="0.0" iyy="0.001" iyz="0.0" izz="0.001" />
+            </inertial>
+
+            <visual>
+                <geometry>
+                    <box size="0.4 1 0.005"/>
+                </geometry>
+  13            <material name="Cyan">
+  14                <color rgba="0 1.0 1.0 1.0"/>
+  15            </material>
+            </visual>
+
+            <collision>
+                <geometry>
+                    <box size="0.4 1 0.005"/>
+                </geometry>
+            </collision>
+        </link>
+    
+    </xacro:macro>
+</robot>

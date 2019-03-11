@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro"
+       name="motoman_mh5_mh50" >
+    
+    <!--+++++++++ Robot geometry +++++++++-->
+    <xacro:include filename="$(find motoman_mh50_support)/urdf/mh50_macro.xacro" />
+    <xacro:motoman_mh50 prefix="motoman_mh50_">  
+    </xacro:motoman_mh50>
+
+    <xacro:include filename="$(find motoman_mh5_support)/urdf/mh5_macro.xacro" />
+    <xacro:motoman_mh5 prefix="motoman_mh5_">
+    </xacro:motoman_mh5>
+    <!-- Used for fixing robot to Gazebo -->
+    <link name="world"/>
+    
+    <!-- Dummy Link -->
+    <link name="dummy_link" />
+    <joint name="world_joint" type="fixed">
+        <parent link="world" />
+        <child link="dummy_link" />
+        <origin xyz="0 0 0" rpy="0 0 0"/>
+        <axis xyz="0 0 1"/>
+    </joint>
+    
+    <!-- motoman_mh50 -->
+    <joint name="motoman_mh50_joint_dummy" type="fixed">
+        <parent link="dummy_link" />
+        <child link="motoman_mh50_base_link" />
+        <origin xyz="1 0 0.1" rpy="0 0 0"/>
+    </joint>
+    
+    <!-- motoman_mh5 -->
+    <joint name="motoman_mh5_joint_dummy" type="fixed">
+        <parent link="dummy_link" />
+        <child link="motoman_mh5_base_link" />
+        <origin xyz="-1.5 0 0.1" rpy="0 0 0"/>
+    </joint>
+
+    <!--xacro:include filename="$(find raw_description)/urdf/vacuum_gripper/gripper.urdf.xacro" />
+    <xacro:vacuum_gripper name="vacuum_gripper" parent="motoman_mh50_tool0">         
+        <origin xyz="0.0 0.0 0.0" rpy="0 4.71 0"/>
+    </xacro:vacuum_gripper--> 
+    <xacro:include filename="$(find motoman_move_glass)/urdf/vacuum_gripper.urdf.xacro" />
+    <xacro:vacuum_gripper name="vacuum_gripper" parent="motoman_mh50_tool0">         
+        <origin xyz="0.0 0.0 0.0" rpy="-1.57 0 0"/>
+    </xacro:vacuum_gripper> 
+    
+    <xacro:include filename="$(find motoman_move_glass)/urdf/glass_panel.urdf.xacro" />
+    <xacro:glass_panel parent="vacuum_gripper_top">
+    </xacro:glass_panel>
+    
+</robot>

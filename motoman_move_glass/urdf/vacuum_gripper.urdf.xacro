@@ -1,0 +1,62 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <xacro:macro name="vacuum_gripper" params="name parent *origin">
+
+    <!-- joint between arm_ee_link and vacuum_gripper_link 
+      gripper mesh from https://onrobot.com/en/downloads-->
+    <joint name="${name}_base_joint" type="fixed">
+        <xacro:insert_block name="origin"/>
+        <parent link="${parent}"/>
+        <child link="${name}_frame"/>
+    </joint>
+
+    <link name="${name}_frame"/>
+
+    <joint name="gripper_to_palm" type="fixed">
+        <parent link="${name}_frame"/>
+        <child link="${name}_body"/>
+        <origin xyz="0.0 0.0 0.0" rpy="0 0 0"/>
+    </joint>
+
+    <link name="${name}_body">
+        <visual>
+            <origin xyz="0 0 0" rpy="0 0 0"/>
+            <geometry>
+                <mesh filename="package://motoman_move_glass/mesh/pr10.stl" scale="0.001 0.001 0.001"/>
+            </geometry>
+            <material name="silver">
+                <color rgba="0.8 0.8 0.8 1"/>
+            </material>
+        </visual>
+        <collision>
+            <origin xyz="0.0 0.0 0" rpy="0 0 0"/>
+            <geometry>
+                <box size="0.13 0.14 0.071"/>
+            </geometry>
+        </collision>
+    </link>    
+    
+    <joint name="gripper_to_tcp" type="fixed">
+        <parent link="${name}_frame"/>
+        <child link="${name}_top"/>
+        <origin xyz=" 0 -0.1 0.0" rpy="3.14159 0 0"/>
+    </joint>
+
+    <link name="${name}_top">
+        <visual>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+            <material name="white">
+                <color rgba="1 1 1 0.5"/>
+            </material>
+        </visual>
+        <collision>
+            <geometry>
+                <box size="0.01 0.01 0.01"/>
+            </geometry>
+        </collision>
+     </link>
+
+  </xacro:macro>
+</robot>

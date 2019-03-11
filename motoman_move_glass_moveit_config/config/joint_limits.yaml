@@ -1,0 +1,59 @@
+# joint_limits.yaml allows the dynamics properties specified in the URDF to be overwritten or augmented as needed
+# Specific joint properties can be changed with the keys [max_position, min_position, max_velocity, max_acceleration]
+# Joint limits can be turned off with [has_velocity_limits, has_acceleration_limits]
+joint_limits:
+  motoman_mh50_joint_2_l:
+    has_velocity_limits: true
+    max_velocity: 3.103
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh50_joint_3_u:
+    has_velocity_limits: true
+    max_velocity: 3.106
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh50_joint_4_r:
+    has_velocity_limits: true
+    max_velocity: 4.363
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh50_joint_5_b:
+    has_velocity_limits: true
+    max_velocity: 4.363
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh50_joint_6_t:
+    has_velocity_limits: true
+    max_velocity: 6.283
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_b:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_l:
+    has_velocity_limits: true
+    max_velocity: 2.96
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_r:
+    has_velocity_limits: true
+    max_velocity: 3.48
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_s:
+    has_velocity_limits: true
+    max_velocity: 2.96
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_t:
+    has_velocity_limits: true
+    max_velocity: 6.97
+    has_acceleration_limits: false
+    max_acceleration: 0
+  motoman_mh5_joint_u:
+    has_velocity_limits: true
+    max_velocity: 2.96
+    has_acceleration_limits: false
+    max_acceleration: 0
