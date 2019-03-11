@@ -1,0 +1,7 @@
+<launch>
+
+  <include file="$(find motoman_move_glass_moveit_config)/launch/demo.launch"/>
+  <node name="motoman_movegroup" pkg="$(find motoman_move_glass)" type="motoman_sim_movegroup" respawn="false" output="screen">
+  </node>
+
+</launch>

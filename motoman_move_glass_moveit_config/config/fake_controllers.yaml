@@ -1,6 +1,7 @@
 controller_list:
   - name: fake_motoman_mh50_controller
     joints:
+      - motoman_mh50_joint_1_s
       - motoman_mh50_joint_2_l
       - motoman_mh50_joint_3_u
       - motoman_mh50_joint_4_r

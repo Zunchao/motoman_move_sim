@@ -121,7 +121,7 @@ planner_configs:
     dense_delta_fraction: 0.001  # delta fraction for interface detection. default: 0.001
     max_failures: 5000  # maximum consecutive failure limit. default: 5000
 motoman_mh50:
-  default_planner_config: None
+  default_planner_config: RRTConnect
   planner_configs:
     - SBL
     - EST
@@ -146,10 +146,10 @@ motoman_mh50:
     - LazyPRMstar
     - SPARS
     - SPARStwo
-  projection_evaluator: joints(motoman_mh50_joint_2_l,motoman_mh50_joint_3_u)
+  projection_evaluator: joints(motoman_mh50_joint_1_s,motoman_mh50_joint_2_l)
   longest_valid_segment_fraction: 0.005
 motoman_mh5:
-  default_planner_config: None
+  default_planner_config: RRTConnect
   planner_configs:
     - SBL
     - EST

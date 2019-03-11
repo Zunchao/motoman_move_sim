@@ -10,11 +10,20 @@
     <!--CHAINS: When a chain is specified, all the links along the chain (including endpoints) are included in the group. Additionally, all the joints that are parents to included links are also included. This means that joints along the chain and the parent joint of the base link are included in the group-->
     <!--SUBGROUPS: Groups can also be formed by referencing to already defined group names-->
     <group name="motoman_mh50">
-        <chain base_link="motoman_mh50_link_1_s" tip_link="motoman_mh50_link_6_t" />
+        <chain base_link="motoman_mh50_base_link" tip_link="motoman_mh50_link_6_t" />
     </group>
     <group name="motoman_mh5">
         <chain base_link="motoman_mh5_base_link" tip_link="motoman_mh5_link_t" />
     </group>
+    <!--GROUP STATES: Purpose: Define a named state for a particular group, in terms of joint values. This is useful to define states like 'folded arms'-->
+    <group_state name="pose_mh50" group="motoman_mh50">
+        <joint name="motoman_mh50_joint_1_s" value="3.107" />
+        <joint name="motoman_mh50_joint_2_l" value="0.7379" />
+        <joint name="motoman_mh50_joint_3_u" value="-0.1895" />
+        <joint name="motoman_mh50_joint_4_r" value="0" />
+        <joint name="motoman_mh50_joint_5_b" value="1.0069" />
+        <joint name="motoman_mh50_joint_6_t" value="-0.4143" />
+    </group_state>
     <!--END EFFECTOR: Purpose: Represent information about an end effector.-->
     <end_effector name="motoman_mh50_ee" parent_link="motoman_mh50_link_6_t" group="motoman_mh50" />
     <!--VIRTUAL JOINT: Purpose: this element defines a virtual joint between a robot link and an external frame of reference (considered fixed with respect to the robot)-->
