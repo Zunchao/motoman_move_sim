@@ -1,0 +1,24 @@
+controller_list:
+  - name: /motoman_mh5_mh50/motoman_mh50_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - motoman_mh50_joint_1_s
+      - motoman_mh50_joint_2_l
+      - motoman_mh50_joint_3_u
+      - motoman_mh50_joint_4_r
+      - motoman_mh50_joint_5_b
+      - motoman_mh50_joint_6_t
+  - name: motoman_mh5_mh50/motoman_mh5_controller
+    action_ns: follow_joint_trajectory
+    default: True
+    type: FollowJointTrajectory
+    joints:
+      - motoman_mh5_joint_s
+      - motoman_mh5_joint_l
+      - motoman_mh5_joint_u
+      - motoman_mh5_joint_r
+      - motoman_mh5_joint_b
+      - motoman_mh5_joint_t
+

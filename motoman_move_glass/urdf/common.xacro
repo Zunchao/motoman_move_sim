@@ -1,0 +1,236 @@
+<?xml version="1.0"?>
+<robot xmlns:xacro="http://ros.org/wiki/xacro">
+  <gazebo reference="motoman_mh50_base_link">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Grey"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_1_s">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Black"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_2_l">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Black"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_3_u">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Grey"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_4_r">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Orange"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_5_b">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_link_6_t">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Orange"/>
+  </gazebo>
+  <gazebo reference="motoman_mh50_tool0">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_base_link">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Orange"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_s">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_l">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Orange"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_u">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_r">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_b">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Orange"/>
+  </gazebo>
+  <gazebo reference="motoman_mh5_link_t">
+    <gravity>true</gravity>
+    <self_collide>false</self_collide>
+    <material value="Gazebo/Blue"/>
+  </gazebo>
+
+  <transmission name="motoman_mh50_joint_1_s_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_1_s">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motoman_mh50_joint_1_s_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="motoman_mh50_joint_2_l_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_2_l">
+    <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+    </joint>
+    <actuator name="motoman_mh50_joint_2_l_motor">
+      <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <transmission name="motoman_mh50_joint_3_u_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_3_u">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh50_joint_3_u_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh50_joint_4_r_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_4_r">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh50_joint_4_r_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh50_joint_5_b_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_5_b">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh50_joint_5_b_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh50_joint_6_t_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh50_joint_6_t">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh50_joint_6_t_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_s_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_s">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_s_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_l_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_l">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_l_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_u_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_u">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_u_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_r_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_r">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_r_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_b_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_b">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_b_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+  <transmission name="motoman_mh5_joint_t_trans">
+    <type>transmission_interface/SimpleTransmission</type>
+    <joint name="motoman_mh5_joint_t">
+      <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
+      <!--hardwareInterface>hardware_interface/VelocityJointInterface</hardwareInterface>
+      <hardwareInterface>EffortJointInterface</hardwareInterface-->
+    </joint>
+    <actuator name="motoman_mh5_joint_t_motor">
+    <hardwareInterface>hardware_interface/EffortJointInterface</hardwareInterface>
+      <mechanicalReduction>1</mechanicalReduction>
+    </actuator>
+  </transmission>
+
+  <!--gazebo>
+      <plugin name="ros_control" filename="libhwi_switch_gazebo_ros_control.so">
+        <robotNamespace>motoman_mh5_mh50</robotNamespace>
+        <filterJointsParam>joint_names</filterJointsParam>
+      </plugin>
+  </gazebo-->
+  <gazebo>
+    <plugin name="gazebo_ros_control" filename="libgazebo_ros_control.so">
+      <robotNamespace>/motoman_mh5_mh50</robotNamespace>
+      <!--jointName>arm_1_joint, arm_2_joint, arm_3_joint, arm_4_joint, arm_5_joint, arm_6_joint, arm_7_joint, arm_8_joint, wheel_right_joint, wheel_left_joint</jointName>
+      <robotParam>/robot_description</robotParam-->
+      <robotSimType>gazebo_ros_control/DefaultRobotHWSim</robotSimType>
+    </plugin>
+  </gazebo>
+</robot>

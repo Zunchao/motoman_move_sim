@@ -1,0 +1,87 @@
+gazebo_ros_control:
+  pid_gains:
+  # these gains are used by the gazebo_ros_control plugin
+    motoman_mh50_joint_1_s:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh50_joint_2_l:
+      p: 1560
+      i: 1000
+      d: 0.55
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh50_joint_3_u:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh50_joint_4_r:
+      p: 1560
+      i: 1000
+      d: 0.55
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh50_joint_5_b:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh50_joint_6_t:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh5_joint_s:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh5_joint_l:
+      p: 1000
+      i: 0.05
+      d: 0
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh5_joint_u:
+      p: 1000
+      i: 0.05
+      d: 0
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true 
+    motoman_mh5_joint_r:
+      p: 100
+      i: 0.05
+      d: 0.01
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh5_joint_b:
+      p: 1000
+      i: 0.05
+      d: 0
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true
+    motoman_mh5_joint_t:
+      p: 1000
+      i: 0.05
+      d: 0
+      i_clamp: 0
+      antiwindup: false
+      publish_state: true         

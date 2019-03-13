@@ -1,0 +1,33 @@
+motoman_mh5_mh50:
+  joint_names: [motoman_mh50_joint_1_s, motoman_mh50_joint_2_l, motoman_mh50_joint_3_u, motoman_mh50_joint_4_r, motoman_mh50_joint_5_b, motoman_mh50_joint_6_t]
+  max_command_silence: 0.5
+  motoman_mh50_controller:
+    type: position_controllers/JointTrajectoryController
+    joints:
+        - motoman_mh50_joint_1_s
+        - motoman_mh50_joint_2_l
+        - motoman_mh50_joint_3_u
+        - motoman_mh50_joint_4_r
+        - motoman_mh50_joint_5_b
+        - motoman_mh50_joint_6_t    
+    constraints:
+        goal_time: 0.6
+        stopped_velocity_tolerance: 0.05
+        motoman_mh50_joint_1_s: {trajectory: 0.3, goal: 0.1}
+        motoman_mh50_joint_2_l: {trajectory: 0.3, goal: 0.1}
+        motoman_mh50_joint_3_u: {trajectory: 0.3, goal: 0.1}
+        motoman_mh50_joint_4_r: {trajectory: 0.3, goal: 0.1}
+        motoman_mh50_joint_5_b: {trajectory: 0.3, goal: 0.1}
+        motoman_mh50_joint_6_t: {trajectory: 0.3, goal: 0.1}
+    gains:
+      motoman_mh50_joint_1_s: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+      motoman_mh50_joint_2_l: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+      motoman_mh50_joint_3_u: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+      motoman_mh50_joint_4_r: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+      motoman_mh50_joint_5_b: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+      motoman_mh50_joint_6_t: {p: 10000,  i: 50, d: 500, i_clamp_min: -100.0, i_clamp_max: 100.0}
+    stop_trajectory_duration: 0.5
+    state_publish_rate:  25
+    action_monitor_rate: 10
+    required_drive_mode: 7
+

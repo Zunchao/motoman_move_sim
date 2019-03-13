@@ -1,0 +1,48 @@
+<?xml version="1.0"?>
+<launch>
+  <!-- these are the arguments you can pass this launch file, for example paused:=true -->
+  <arg name="paused" default="false"/>
+  <arg name="use_sim_time" default="true"/>
+  <arg name="gui" default="true"/>
+  <arg name="headless" default="false"/>
+  <arg name="debug" default="false"/>
+  <arg name="model" default="$(find motoman_move_glass)/urdf/robots.urdf"/>
+
+  <include file="$(find gazebo_ros)/launch/empty_world.launch">
+    <arg name="debug" value="$(arg debug)" />
+    <arg name="gui" value="$(arg gui)" />
+    <arg name="paused" value="$(arg paused)"/>
+    <arg name="use_sim_time" value="$(arg use_sim_time)"/>
+    <arg name="headless" value="$(arg headless)"/>
+    <arg name="verbose" value="true"/>
+  </include>
+  <!-- send robot urdf to param server -->
+  <param name="robot_description" command="$(find xacro)/xacro --inorder $(arg model)" />
+  
+  <!-- push robot_description to factory and spawn robot in gazebo -->
+  <node name="spawn_gazebo_model" pkg="gazebo_ros" type="spawn_model" args="-urdf -param robot_description -model motoman_mh5_mh50 -z 0.1" respawn="false" output="screen" />
+
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="robot_state_publisher"
+    respawn="false" output="screen">
+  </node>
+
+  <node pkg="joint_state_publisher" type="joint_state_publisher" name="joint_state_publisher" >
+      <param name="use_gui" value="false" />
+      <param name="rate" value="50" />
+  </node>
+  
+  <rosparam file="$(find motoman_move_glass)/config/joint_configurations.yaml" command="load"/>
+  <!--++++++++++++ joint_state_controller -->
+  <rosparam file="$(find motoman_move_glass)/config/joint_state_controller.yaml" command="load"/>
+
+  <rosparam file="$(find motoman_move_glass)/config/mh50_controller.yaml" command="load"/>
+
+  <rosparam file="$(find motoman_move_glass)/config/mh5_controller.yaml" command="load"/>
+
+  <rosparam  ns="/motoman_mh5_mh50" file="$(find motoman_move_glass)/config/gazebo_control.yaml" command="load"/>
+  
+  <node name="controller_spawner" pkg="controller_manager" type="spawner" ns="/motoman_mh5_mh50" args="motoman_mh50_controller motoman_mh5_controller joint_state_controller" respawn="false" output="screen">
+     <param name="rate" value="50" />
+  </node>
+  
+</launch>

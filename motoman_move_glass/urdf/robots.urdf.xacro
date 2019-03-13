@@ -49,4 +49,6 @@
     <xacro:glass_panel parent="vacuum_gripper_top">
     </xacro:glass_panel>
     
+    <xacro:include filename="$(find motoman_move_glass)/urdf/common.xacro"/>
+    
 </robot>

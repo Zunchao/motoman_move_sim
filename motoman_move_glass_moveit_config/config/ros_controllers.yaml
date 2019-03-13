@@ -34,6 +34,7 @@ motoman_mh5_mh50:
       default: True
       type: FollowJointTrajectory
       joints:
+        - motoman_mh50_joint_1_s
         - motoman_mh50_joint_2_l
         - motoman_mh50_joint_3_u
         - motoman_mh50_joint_4_r
