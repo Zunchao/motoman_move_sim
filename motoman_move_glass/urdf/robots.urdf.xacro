@@ -26,14 +26,14 @@
     <joint name="motoman_mh50_joint_dummy" type="fixed">
         <parent link="dummy_link" />
         <child link="motoman_mh50_base_link" />
-        <origin xyz="1 0 0.1" rpy="0 0 0"/>
+        <origin xyz="1 0 0.5" rpy="0 0 0"/>
     </joint>
     
     <!-- motoman_mh5 -->
     <joint name="motoman_mh5_joint_dummy" type="fixed">
         <parent link="dummy_link" />
         <child link="motoman_mh5_base_link" />
-        <origin xyz="-1.5 0 0.1" rpy="0 0 0"/>
+        <origin xyz="0.9 -2.52 0.12" rpy="0 0 1.57"/>
     </joint>
 
     <!--xacro:include filename="$(find raw_description)/urdf/vacuum_gripper/gripper.urdf.xacro" />
