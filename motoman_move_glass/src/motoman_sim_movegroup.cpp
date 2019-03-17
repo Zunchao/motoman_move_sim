@@ -119,17 +119,23 @@ void poseCallback()
             current_state_mh50->update();
             }
         traj_file << move_group_mh50.getLinkNames()[0] << " position : " << link_state_mh50_0.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[0] << " rotation matrix : " << link_state_mh50_0.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_0.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[1] << " position : " << link_state_mh50_1.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[1] << " rotation matrix : " << link_state_mh50_1.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_1.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[2] << " position : " << link_state_mh50_2.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[2] << " rotation matrix : " << link_state_mh50_2.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_2.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[3] << " position : " << link_state_mh50_3.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[3] << " rotation matrix : " << link_state_mh50_3.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_3.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[4] << " position : " << link_state_mh50_4.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[4] << " rotation matrix : " << link_state_mh50_4.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_4.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[5] << " position : " << link_state_mh50_5.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[5] << " rotation matrix : " << link_state_mh50_5.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_5.rotation() << std::endl;
     }
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
@@ -185,17 +191,23 @@ void poseCallback()
             current_state_mh50->update();
         }
         traj_file << move_group_mh50.getLinkNames()[0] << " position : " << link_state_mh50_0.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[0] << " rotation matrix : " << link_state_mh50_0.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_0.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[1] << " position : " << link_state_mh50_1.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[1] << " rotation matrix : " << link_state_mh50_1.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_1.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[2] << " position : " << link_state_mh50_2.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[2] << " rotation matrix : " << link_state_mh50_2.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_2.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[3] << " position : " << link_state_mh50_3.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[3] << " rotation matrix : " << link_state_mh50_3.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_3.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[4] << " position : " << link_state_mh50_4.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[4] << " rotation matrix : " << link_state_mh50_4.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_4.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[5] << " position : " << link_state_mh50_5.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[5] << " rotation matrix : " << link_state_mh50_5.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_5.rotation() << std::endl;
     }
     visual_tools.deleteAllMarkers();
     for (std::size_t i = 0; i < waypoints.size(); ++i){
@@ -242,17 +254,23 @@ void poseCallback()
             current_state_mh50->update();
         }
         traj_file << move_group_mh50.getLinkNames()[0] << " position : " << link_state_mh50_0.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[0] << " rotation matrix : " << link_state_mh50_0.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_0.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[1] << " position : " << link_state_mh50_1.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[1] << " rotation matrix : " << link_state_mh50_1.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_1.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[2] << " position : " << link_state_mh50_2.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[2] << " rotation matrix : " << link_state_mh50_2.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_2.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[3] << " position : " << link_state_mh50_3.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[3] << " rotation matrix : " << link_state_mh50_3.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_3.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[4] << " position : " << link_state_mh50_4.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[4] << " rotation matrix : " << link_state_mh50_4.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_4.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[5] << " position : " << link_state_mh50_5.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[5] << " rotation matrix : " << link_state_mh50_5.rotation() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_mh50_5.rotation() << std::endl;
     }
     visual_tools.deleteAllMarkers();
     robot_state->setJointGroupPositions(joint_model_group_mh50, trajectory.joint_trajectory.points.back().positions);
