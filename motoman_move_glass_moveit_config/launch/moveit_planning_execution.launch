@@ -9,6 +9,8 @@
     <arg name="load_robot_description" value="true" />
   </include>
   
+  <rosparam command="load" file="$(find motoman_move_glass_moveit_config)/config/kinematics.yaml"/>
+  
   <group if="$(arg sim)">
     <include file="$(find industrial_robot_simulator)/launch/robot_interface_simulator.launch" />
   </group>

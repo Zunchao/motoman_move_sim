@@ -242,7 +242,7 @@ void poseCallback()
             current_state_mh50->update();
         }
         traj_file << move_group_mh50.getLinkNames()[0] << " position : " << link_state_mh50_0.translation().transpose() << std::endl;
-        traj_file << move_group_mh50.getLinkNames()[0] << " rotation matrix : " << link_state_mh50_0.rotation() << std::endl;
+        traj_file << move_group_mh50.getLinkNames()[0] << " rotation matrix : " << std::endl << link_state_mh50_0.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[1] << " position : " << link_state_mh50_1.translation().transpose() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[1] << " rotation matrix : " << link_state_mh50_1.rotation() << std::endl;
         traj_file << move_group_mh50.getLinkNames()[2] << " position : " << link_state_mh50_2.translation().transpose() << std::endl;
