@@ -1,0 +1,10 @@
+<launch>
+
+  <!-- By default, we are not in debug mode -->
+
+  <include file="$(find panda_moveit_config)/launch/demo.launch"/>
+
+  <node name="panda_sim_movegroup" pkg="panda_move" type="panda_sim_movegroup" respawn="false" output="screen">
+  </node>
+
+</launch>

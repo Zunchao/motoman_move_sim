@@ -1,0 +1,8 @@
+<launch>
+
+  <include file="$(find lwa4p_moveit_config_indigo)/launch/demo.launch"/>
+
+  <node name="lwa4p_move" pkg="lwa4p_move_control" type="lwa4p_move_control" respawn="false" output="screen">
+  </node>
+
+</launch>

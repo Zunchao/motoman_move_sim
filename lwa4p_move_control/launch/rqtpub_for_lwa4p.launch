@@ -1,0 +1,8 @@
+<launch>
+
+  
+
+  <node name="main" pkg="lwa4p_move_control" type="main" respawn="false" output="screen">
+  </node>
+
+</launch>

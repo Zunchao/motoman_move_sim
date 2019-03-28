@@ -1,0 +1,8 @@
+<launch>
+
+  <include file="$(find lwa4p_moveit_config)/launch/moveit_planning_execution.launch"/>
+
+  <node name="lwa4p_move" pkg="lwa4p_move_control" type="lwa4p_move_control" respawn="false" output="screen">
+  </node>
+
+</launch>
