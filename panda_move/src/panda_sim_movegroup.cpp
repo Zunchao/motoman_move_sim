@@ -61,7 +61,7 @@ void poseCallback()
     tf2::Quaternion gQuaternion;
     std::vector<float> gOrient;
 
-    sleep(10.0);
+    traj_file.open ("/home/zheng/test_ws/src/motoman_move_sim/panda_move/results/traj_results.csv");
 
     namespace rvt = rviz_visual_tools;
     moveit_visual_tools::MoveItVisualTools visual_tools("panda_link0");
@@ -75,38 +75,75 @@ void poseCallback()
 
     moveit::planning_interface::MoveGroupInterface::Plan my_plan;
     bool success = false;
-    geometry_msgs::Pose target_pose;
-    // path 1
-    move_group_pandaarm.setStartStateToCurrentState();
+
     gQuaternion.setRPY( -M_PI, -M_PI/2, 0 );
     gQuaternion.normalize();
+    geometry_msgs::Pose target_pose;
     target_pose.orientation.w = gQuaternion.w();
     target_pose.orientation.x = gQuaternion.x();
     target_pose.orientation.y = gQuaternion.y();
     target_pose.orientation.z = gQuaternion.z();
-    target_pose.position.x = 0.55;
-    target_pose.position.y = 0.25;
-    target_pose.position.z = 0.65;
+    target_pose.position.x = 0.35;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.75;
     move_group_pandaarm.setPoseTarget(target_pose);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
 
     success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-    visual_tools.publishRobotState(robot_state);
+    current_state_pandaarm->enforceBounds();
+    traj_file <<  "Traj No. 1" << std::endl;
+    for (std::size_t i = 0; i < my_plan.trajectory_.joint_trajectory.points.size(); ++i){
+        traj_file <<  "Traj No.1 pathpoint " << i << std::endl;
+        for(std::size_t j = 0; j < joint_names_pandaarm.size(); ++j){
+            joint_group_positions_pandaarm[j] = my_plan.trajectory_.joint_trajectory.points[i].positions[j];
+            current_state_pandaarm->setJointGroupPositions(joint_model_group_pandaarm, joint_group_positions_pandaarm);
+            current_state_pandaarm->setVariablePositions(move_group_pandaarm.getJointNames(), joint_group_positions_pandaarm);
+            current_state_pandaarm->getGlobalLinkTransform(move_group_pandaarm.getLinkNames()[j]);
+            //current_state_pandaarm->getJointTransform(move_group_pandaarm.getJointNames()[j]);
+            current_state_pandaarm->updateLinkTransforms();
+            current_state_pandaarm->update();
+            }
+        traj_file << move_group_pandaarm.getLinkNames()[0] << " position : " << link_state_pandaarm_0.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_0.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[1] << " position : " << link_state_pandaarm_1.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_1.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[2] << " position : " << link_state_pandaarm_2.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_2.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[3] << " position : " << link_state_pandaarm_3.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_3.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[4] << " position : " << link_state_pandaarm_4.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_4.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[5] << " position : " << link_state_pandaarm_5.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_5.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[6] << " position : " << link_state_pandaarm_6.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_6.rotation() << std::endl;
+    }
 
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose1");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    robot_state->setJointGroupPositions(joint_model_group_pandaarm, my_plan.trajectory_.joint_trajectory.points.back().positions);
     if (success){
-        //move_group_pandaarm.execute(my_plan);
-        sleep(10.0);
+        move_group_pandaarm.execute(my_plan);
+        sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
     else{
         ROS_WARN_STREAM("manipulator Moving failed.");
     }
+    //visual_tools.publishRobotState(robot_state);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
-    // path 2
-    current_state_pandaarm->enforceBounds();    
     move_group_pandaarm.setStartState(*robot_state);
-    //move_group_pandaarm.setStartStateToCurrentState();
 
     moveit_msgs::OrientationConstraint ocm;
     ocm.link_name = "panda_link8";
@@ -127,24 +164,59 @@ void poseCallback()
     std::vector<geometry_msgs::Pose> waypoints;
     waypoints.push_back(target_pose3);
 
-    target_pose3.position.y -= 0.4;
-    target_pose3.position.x -= 0.01;
+    target_pose3.position.y -= 0.3;
+    target_pose3.position.x -= 0.1;
     waypoints.push_back(target_pose3);
-    target_pose3.position.z -= 0.15;
+    target_pose3.position.z -= 0.1;
     waypoints.push_back(target_pose3);
-    target_pose3.position.y += 0.4;
-    target_pose3.position.x += 0.01;
+    target_pose3.position.y += 0.3;
+    target_pose3.position.x += 0.1;
     waypoints.push_back(target_pose3);
-    target_pose3.position.z += 0.15;
+    target_pose3.position.z += 0.1;
     waypoints.push_back(target_pose3);
 
-    move_group_pandaarm.setMaxVelocityScalingFactor(0.1);
+    //move_group_pandaarm.setMaxVelocityScalingFactor(0.01);
     moveit_msgs::RobotTrajectory trajectory;
-    const double jump_threshold = 0.01;
+    const double jump_threshold = 0.0;
     const double eef_step = 0.01;
     double fraction = move_group_pandaarm.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
     ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
-
+    traj_file <<  "Traj No. 2" << std::endl;
+    for (std::size_t i = 0; i < trajectory.joint_trajectory.points.size(); ++i){
+        traj_file <<  "Traj No.2 pathpoint " << i << std::endl;
+        for(std::size_t j = 0; j < joint_names_pandaarm.size(); ++j){
+            joint_group_positions_pandaarm[j] = trajectory.joint_trajectory.points[i].positions[j];
+            current_state_pandaarm->setJointGroupPositions(joint_model_group_pandaarm, joint_group_positions_pandaarm);
+            current_state_pandaarm->getGlobalLinkTransform(move_group_pandaarm.getLinkNames()[j]);
+            current_state_pandaarm->updateLinkTransforms();
+            current_state_pandaarm->update();
+        }
+        traj_file << move_group_pandaarm.getLinkNames()[0] << " position : " << link_state_pandaarm_0.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_0.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[1] << " position : " << link_state_pandaarm_1.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_1.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[2] << " position : " << link_state_pandaarm_2.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_2.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[3] << " position : " << link_state_pandaarm_3.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_3.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[4] << " position : " << link_state_pandaarm_4.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_4.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[5] << " position : " << link_state_pandaarm_5.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_5.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[6] << " position : " << link_state_pandaarm_6.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_6.rotation() << std::endl;
+    }
+    robot_state->setJointGroupPositions(joint_model_group_pandaarm, trajectory.joint_trajectory.points.back().positions);
+    my_plan.trajectory_ = trajectory;
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
     visual_tools.deleteAllMarkers();
     for (std::size_t i = 0; i < waypoints.size(); ++i){
         //waypoints[i].position.y -= 0.27;
@@ -152,58 +224,85 @@ void poseCallback()
         //waypoints[i].position.z += 0.15;
         visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);}
     visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
-    visual_tools.publishRobotState(robot_state);
-
-    my_plan.trajectory_ = trajectory;
-    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (pose goal) %s", success ? "" : "FAILED");
-
     if (success){
-        //move_group_pandaarm.execute(my_plan);
+        move_group_pandaarm.execute(my_plan);
         sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
     else{
         ROS_WARN_STREAM("manipulator Moving failed.");
     }
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+    /**/
 
-
-    // path 4
-    move_group_pandaarm.setStartState(*robot_state);
-    //move_group_pandaarm.setStartStateToCurrentState();
-    gQuaternion.setRPY( -M_PI/30, -M_PI/3, 0 );
+    gQuaternion.setRPY( -M_PI/2,-M_PI/2,  0);
     gQuaternion.normalize();
-    target_pose.orientation.w = gQuaternion.w();
-    target_pose.orientation.x = gQuaternion.x();
-    target_pose.orientation.y = gQuaternion.y();
-    target_pose.orientation.z = gQuaternion.z();
-    target_pose.position.x = 0.4;
-    target_pose.position.y = 0.3;
-    target_pose.position.z = 0.6;
-    move_group_pandaarm.setPoseTarget(target_pose);
-    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    std::vector<geometry_msgs::Pose> waypoints2;
+    waypoints2.push_back(target_pose3);
 
-    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    target_pose3.position.y += 0.5;
+    target_pose3.position.x -= 0.3;
+    target_pose3.position.z -= 0.1;
+    target_pose3.orientation.w = gQuaternion.w();
+    target_pose3.orientation.x = gQuaternion.x();
+    target_pose3.orientation.y = gQuaternion.y();
+    target_pose3.orientation.z = gQuaternion.z();
+    waypoints2.push_back(target_pose3);
 
-    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
-    current_state_pandaarm->enforceBounds();
-
-    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
-    visual_tools.publishAxisLabeled(target_pose, "pose1");
-    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
-    robot_state->setJointGroupPositions(joint_model_group_pandaarm, my_plan.trajectory_.joint_trajectory.points.back().positions);
+    move_group_pandaarm.setMaxVelocityScalingFactor(0.1);
+    fraction = move_group_pandaarm.computeCartesianPath(waypoints2, eef_step, jump_threshold, trajectory);
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (Cartesian path) (%.2f%% acheived)", fraction * 100.0);
+    traj_file <<  "Traj No. 3" << std::endl;
+    for (std::size_t i = 0; i < trajectory.joint_trajectory.points.size(); ++i){
+        traj_file <<  "Traj No.3 pathpoint " << i << std::endl;
+        for(std::size_t j = 0; j < joint_names_pandaarm.size(); ++j){
+            joint_group_positions_pandaarm[j] = trajectory.joint_trajectory.points[i].positions[j];
+            current_state_pandaarm->setJointGroupPositions(joint_model_group_pandaarm, joint_group_positions_pandaarm);
+            current_state_pandaarm->getGlobalLinkTransform(move_group_pandaarm.getLinkNames()[j]);
+            current_state_pandaarm->updateLinkTransforms();
+            current_state_pandaarm->update();
+        }
+        traj_file << move_group_pandaarm.getLinkNames()[0] << " position : " << link_state_pandaarm_0.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_0.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[1] << " position : " << link_state_pandaarm_1.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_1.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[2] << " position : " << link_state_pandaarm_2.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_2.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[3] << " position : " << link_state_pandaarm_3.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_3.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[4] << " position : " << link_state_pandaarm_4.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_4.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[5] << " position : " << link_state_pandaarm_5.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_5.rotation() << std::endl;
+        traj_file << move_group_pandaarm.getLinkNames()[6] << " position : " << link_state_pandaarm_6.translation().transpose() << std::endl;
+        traj_file << " rotation matrix : " << std::endl;
+        traj_file << link_state_pandaarm_6.rotation() << std::endl;
+    }
     my_plan.trajectory_ = trajectory;
     success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
-    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (pose goal) %s", success ? "" : "FAILED");
-
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
+    visual_tools.deleteAllMarkers();
+    robot_state->setJointGroupPositions(joint_model_group_pandaarm, trajectory.joint_trajectory.points.back().positions);
     if (success){
-        //move_group_pandaarm.execute(my_plan);
+        move_group_pandaarm.execute(my_plan);
         sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
     else{
         ROS_WARN_STREAM("manipulator Moving failed.");
     }
+    //visual_tools.publishRobotState(robot_state);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+
+    traj_file.close();
 }
 
 int main(int argc, char **argv)
@@ -213,7 +312,7 @@ int main(int argc, char **argv)
     ros::AsyncSpinner spinner(1);
     spinner.start();
     display_publisher = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/move_group/display_planned_path", 1, true);
-    //state_publisher = node_handle.advertise<moveit_msgs::DisplayRobotState>("/move_group/display_robot_state", 1, true);
+    state_publisher = node_handle.advertise<moveit_msgs::DisplayRobotState>("/move_group/display_robot_state", 1, true);
     poseCallback();
 
     ros::waitForShutdown();
