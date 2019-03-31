@@ -23,6 +23,379 @@ ros::Publisher display_publisher;
 ros::Publisher state_publisher;
 moveit_msgs::DisplayTrajectory display_trajectory;
 
+
+void poseCallback_fifth()
+{
+    const std::string PLANNING_GROUP_pandaarm = "panda_arm";
+    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+    moveit::planning_interface::MoveGroupInterface move_group_pandaarm(PLANNING_GROUP_pandaarm);
+    const robot_state::JointModelGroup* joint_model_group_pandaarm =
+            move_group_pandaarm.getCurrentState()->getJointModelGroup(PLANNING_GROUP_pandaarm);
+    std::vector<double> link_state_pandaarm_ori;
+
+    move_group_pandaarm.setPlannerId("TRRT");
+
+    tf2::Quaternion gQuaternion;
+    std::vector<float> gOrient;
+
+    namespace rvt = rviz_visual_tools;
+    moveit_visual_tools::MoveItVisualTools visual_tools("panda_link0");
+    visual_tools.deleteAllMarkers();
+    visual_tools.loadRemoteControl();
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo");
+
+    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+    bool success = false;
+    //path1
+    move_group_pandaarm.setStartStateToCurrentState();
+    gQuaternion.setRPY( 0, -M_PI,  0 );
+    //( -M_PI, -M_PI,  0 )up
+    //M_PI/2, -M_PI,  0left
+    gQuaternion.normalize();
+    geometry_msgs::Pose target_pose;
+    target_pose.orientation.w = gQuaternion.w();
+    target_pose.orientation.x = gQuaternion.x();
+    target_pose.orientation.y = gQuaternion.y();
+    target_pose.orientation.z = gQuaternion.z();
+    target_pose.position.x = 0.5;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.35;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose1");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 1");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 2");
+    // path 2
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.5;
+    target_pose.position.y = -0.2;
+    target_pose.position.z = 0.35;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose2");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 2");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 3");
+    // path 3
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.3;
+    target_pose.position.y = -0.2;
+    target_pose.position.z = 0.35;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose3");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 3");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 4");
+    // path 4
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.3;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.35;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose4");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 4");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+
+
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 5");
+    // path5
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.5;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.35;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 5 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 5 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose5");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 5");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 6");
+    // path 2
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.3;
+    target_pose.position.y = -0.3;
+    target_pose.position.z = 0.65;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 6 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 6 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose6");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 6");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+}
+
+
+
+void poseCallback_fourth()
+{//
+    const std::string PLANNING_GROUP_pandaarm = "panda_arm";
+    moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
+    moveit::planning_interface::MoveGroupInterface move_group_pandaarm(PLANNING_GROUP_pandaarm);
+    const robot_state::JointModelGroup* joint_model_group_pandaarm =
+            move_group_pandaarm.getCurrentState()->getJointModelGroup(PLANNING_GROUP_pandaarm);
+    std::vector<double> link_state_pandaarm_ori;
+
+    //move_group_pandaarm.setPlannerId("TRRT");
+
+    tf2::Quaternion gQuaternion;
+    std::vector<float> gOrient;
+
+    namespace rvt = rviz_visual_tools;
+    moveit_visual_tools::MoveItVisualTools visual_tools("panda_link0");
+    visual_tools.deleteAllMarkers();
+    visual_tools.loadRemoteControl();
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to start the demo");
+
+    moveit::planning_interface::MoveGroupInterface::Plan my_plan;
+    bool success = false;
+    move_group_pandaarm.setMaxVelocityScalingFactor(0.1);
+    //path1
+    move_group_pandaarm.setStartStateToCurrentState();
+    gQuaternion.setRPY( -M_PI, -M_PI/2, 0 );
+    gQuaternion.normalize();
+    geometry_msgs::Pose target_pose;
+    target_pose.orientation.w = gQuaternion.w();
+    target_pose.orientation.x = gQuaternion.x();
+    target_pose.orientation.y = gQuaternion.y();
+    target_pose.orientation.z = gQuaternion.z();
+    target_pose.position.x = 0.35;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.75;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose1");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 2");
+
+    // path 2
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.35;
+    target_pose.position.y = -0.2;
+    target_pose.position.z = 0.75;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 2 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose2");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 2");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 3");
+
+    // path 3
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.35;
+    target_pose.position.y = -0.2;
+    target_pose.position.z = 0.55;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 3 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose3");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 3");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 4");
+
+    // path 4
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.35;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.55;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 4 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose4");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 4");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 5");
+    // path 5
+    move_group_pandaarm.setStartStateToCurrentState();
+    target_pose.position.x = 0.35;
+    target_pose.position.y = 0.2;
+    target_pose.position.z = 0.75;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 5 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 5 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose5");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 5");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to plan 6");
+    // path 6
+    move_group_pandaarm.setStartStateToCurrentState();
+    gQuaternion.setRPY( -M_PI/2,-M_PI/2,  0);
+    gQuaternion.normalize();
+    target_pose.orientation.w = gQuaternion.w();
+    target_pose.orientation.x = gQuaternion.x();
+    target_pose.orientation.y = gQuaternion.y();
+    target_pose.orientation.z = gQuaternion.z();
+    target_pose.position.x = 0.1;
+    target_pose.position.y = 0.5;
+    target_pose.position.z = 0.65;
+    move_group_pandaarm.setPoseTarget(target_pose);
+
+    success = (move_group_pandaarm.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
+    std::cout << "target pose :" << target_pose.orientation << std::endl;
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 6 (pose goal) %s", success ? "" : "FAILED");
+    ROS_INFO_NAMED("tutorial", "Visualizing plan 6 as trajectory line");
+    visual_tools.publishAxisLabeled(target_pose, "pose6");
+    visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_pandaarm);
+    visual_tools.trigger();
+    visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to excute path 6");
+    if (success){
+        move_group_pandaarm.execute(my_plan);
+        //sleep(5.0);
+        ROS_INFO_STREAM("manipulator Moving done.");
+    }
+    else{
+        ROS_WARN_STREAM("manipulator Moving failed.");
+    }
+}
+
+
+
 void poseCallback_third()
 {
     const std::string PLANNING_GROUP_pandaarm = "panda_arm";
@@ -622,7 +995,9 @@ int main(int argc, char **argv)
     spinner.start();
     //display_publisher = node_handle.advertise<moveit_msgs::DisplayTrajectory>("/move_group/display_planned_path", 1, true);
     //state_publisher = node_handle.advertise<moveit_msgs::DisplayRobotState>("/move_group/display_robot_state", 1, true);
-    poseCallback_third();
+    //poseCallback_fifth();
+    poseCallback_fourth();
+    //poseCallback_third();
     //poseCallback_new();
     ros::waitForShutdown();
     return 0;

@@ -40,15 +40,17 @@ void poseCallback()
     // class to deal directly with the world.
     moveit::planning_interface::PlanningSceneInterface planning_scene_interface;
     bool success = false;
-    group.setPlannerId("RRTConnect");
-    group.setPlanningTime(45);
+    //group.setPlannerId("RRTConnect");
+    //group.setPlanningTime(45);
     group.setNumPlanningAttempts(10);
+    //group.allowReplanning();
 
     tf2::Quaternion gQuaternion;
     geometry_msgs::Pose target_pose1;
 
     sleep(5.0);
 
+    //group.setMaxVelocityScalingFactor(0.1);
     group.setStartStateToCurrentState();
     gQuaternion.setRPY( -M_PI/3, M_PI/6, 0 );
     gQuaternion.normalize();
@@ -67,13 +69,13 @@ void poseCallback()
 
     if (success){
         group.execute(my_plan);
-        sleep(10.0);
+        sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
     else{
         ROS_WARN_STREAM("manipulator Moving failed.");
     }
-
+/*
     group.setStartStateToCurrentState();
     gQuaternion.setRPY( 0, M_PI/2, 0 );
     gQuaternion.normalize();
@@ -117,14 +119,14 @@ void poseCallback()
 
     if (success){
         group.execute(my_plan);
-        sleep(10.0);
+        sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
     else{
         ROS_WARN_STREAM("manipulator Moving failed.");
     }
 
-
+*/
     group.setStartStateToCurrentState();
     moveit_msgs::OrientationConstraint ocm;
     ocm.link_name = "arm_6_link";
@@ -145,15 +147,12 @@ void poseCallback()
     std::vector<geometry_msgs::Pose> waypoints;
     waypoints.push_back(target_pose3);
 
-    target_pose3.position.z += 0.1;
-    target_pose3.position.y += 0.3;
-
-    target_pose3.position.x += 0.1;
+    target_pose3.position.z -= 0.3;
+    target_pose3.position.y -= 0.1;
     waypoints.push_back(target_pose3);
 
-    group.setMaxVelocityScalingFactor(0.1);
     moveit_msgs::RobotTrajectory trajectory;
-    const double jump_threshold = 0.01;
+    const double jump_threshold = 0.0;
     const double eef_step = 0.01;
     double fraction = group.computeCartesianPath(waypoints, eef_step, jump_threshold, trajectory);
 
@@ -163,6 +162,7 @@ void poseCallback()
 
     if (success){
         group.execute(my_plan);
+        group.move();
         sleep(5.0);
         ROS_INFO_STREAM("manipulator Moving done.");
     }
