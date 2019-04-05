@@ -120,7 +120,7 @@ void poseCallback()
                    << link_state_mh50_2.translation().transpose()
                    << link_state_mh50_3.translation().transpose()
                    << link_state_mh50_4.translation().transpose()
-                   << link_state_mh50_5.translation().transpose() ;
+                   << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 0 as trajectory line");
@@ -172,7 +172,7 @@ void poseCallback()
                    << link_state_mh50_2.translation().transpose()
                    << link_state_mh50_3.translation().transpose()
                    << link_state_mh50_4.translation().transpose()
-                   << link_state_mh50_5.translation().transpose() ;
+                   << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
@@ -239,7 +239,7 @@ void poseCallback()
                   << link_state_mh50_2.translation().transpose()
                   << link_state_mh50_3.translation().transpose()
                   << link_state_mh50_4.translation().transpose()
-                  << link_state_mh50_5.translation().transpose() ;
+                  << link_state_mh50_5.translation().transpose() << std::endl;
 
     }
     visual_tools.deleteAllMarkers();
@@ -302,7 +302,7 @@ void poseCallback()
                   << link_state_mh50_2.translation().transpose()
                   << link_state_mh50_3.translation().transpose()
                   << link_state_mh50_4.translation().transpose()
-                  << link_state_mh50_5.translation().transpose();
+                  << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     visual_tools.deleteAllMarkers();
@@ -330,13 +330,31 @@ void poseCallback()
     success = (move_group_mh50.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
+    for (std::size_t i = 1; i < my_plan.trajectory_.joint_trajectory.points.size(); ++i){
+        //traj_file <<  "Traj No.0 pathpoint " << i << std::endl;
+        for(std::size_t j = 0; j < joint_names_mh50.size(); ++j){
+            joint_group_positions_mh50[j] = my_plan.trajectory_.joint_trajectory.points[i].positions[j];
+            current_state_mh50->setJointGroupPositions(joint_model_group_mh50, joint_group_positions_mh50);
+            current_state_mh50->setVariablePositions(move_group_mh50.getJointNames(), joint_group_positions_mh50);
+            current_state_mh50->getGlobalLinkTransform(move_group_mh50.getLinkNames()[j]);
+            //current_state_mh50->getJointTransform(move_group_mh50.getJointNames()[j]);
+            current_state_mh50->updateLinkTransforms();
+            current_state_mh50->update();
+        }
+        traj_file <<  link_state_mh50_0.translation().transpose()
+                   << link_state_mh50_1.translation().transpose()
+                   << link_state_mh50_2.translation().transpose()
+                   << link_state_mh50_3.translation().transpose()
+                   << link_state_mh50_4.translation().transpose()
+                   << link_state_mh50_5.translation().transpose() << std::endl;
+    }
+
     for(std::size_t j = 0; j < joint_names_mh50.size(); ++j){
-        joint_group_positions_mh50[j] = trajectory.joint_trajectory.points.back().positions[j];
+        joint_group_positions_mh50[j] = my_plan.trajectory_.joint_trajectory.points.back().positions[j];
         current_state_mh50->setJointGroupPositions(joint_model_group_mh50, joint_group_positions_mh50);
         current_state_mh50->updateLinkTransforms();
         current_state_mh50->update();
     }
-    traj_file << std::endl;
     traj_file << std::endl;
     traj_file <<  link_state_mh50_0.translation().transpose()
                << link_state_mh50_1.translation().transpose()
