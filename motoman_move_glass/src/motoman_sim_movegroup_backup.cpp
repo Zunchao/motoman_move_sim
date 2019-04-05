@@ -101,10 +101,11 @@ void poseCallback()
 
     success = (move_group_mh50.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
+    std::vector<float> resetpose;
     ROS_INFO_NAMED("tutorial", "Visualizing plan 0 (pose goal) %s", success ? "" : "FAILED");
     current_state_mh50->enforceBounds();
     //traj_file <<  "Traj No. 0" << std::endl;
-    for (std::size_t i = 1; i < my_plan.trajectory_.joint_trajectory.points.size(); ++i){
+    for (std::size_t i = 0; i < my_plan.trajectory_.joint_trajectory.points.size(); ++i){
         //traj_file <<  "Traj No.0 pathpoint " << i << std::endl;
         for(std::size_t j = 0; j < joint_names_mh50.size(); ++j){
             joint_group_positions_mh50[j] = my_plan.trajectory_.joint_trajectory.points[i].positions[j];
@@ -115,27 +116,27 @@ void poseCallback()
             current_state_mh50->updateLinkTransforms();
             current_state_mh50->update();
         }
+
+        //traj_file << move_group_mh50.getLinkNames()[0] << " position : " << link_state_mh50_0.translation().transpose() << std::endl;
+        //traj_file << " rotation matrix : " << std::endl;
+        //traj_file << link_state_mh50_0.rotation() << std::endl;
         traj_file <<  link_state_mh50_0.translation().transpose()
                    << link_state_mh50_1.translation().transpose()
                    << link_state_mh50_2.translation().transpose()
                    << link_state_mh50_3.translation().transpose()
                    << link_state_mh50_4.translation().transpose()
-                   << link_state_mh50_5.translation().transpose() ;
+                   << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 0 as trajectory line");
     visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_mh50);
+    current_state_mh50->setJointGroupPositions(joint_model_group_mh50, my_plan.trajectory_.joint_trajectory.points.back().positions);
+    ros::Duration(2).sleep();
+    visual_tools.publishRobotState(current_state_mh50);
     visual_tools.trigger();
     //visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
-    if (success){
-        move_group_mh50.execute(my_plan);
-        ROS_INFO_STREAM("manipulator Moving done.");
-    }
-    else{
-        ROS_WARN_STREAM("manipulator Moving failed.");
-    }
-    move_group_mh50.setStartStateToCurrentState();
-    //move_group_mh50.setStartState(*current_state_mh50);
+
+    move_group_mh50.setStartState(*current_state_mh50);
     gQuaternion.setRPY( 0, 0, -M_PI/2 );
     gQuaternion.normalize();
     geometry_msgs::Pose target_pose;
@@ -151,6 +152,7 @@ void poseCallback()
     success = (move_group_mh50.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 (pose goal) %s", success ? "" : "FAILED");
+    current_state_mh50->enforceBounds();
     //traj_file <<  "Traj No. 1" << std::endl;
     for (std::size_t i = 0; i < my_plan.trajectory_.joint_trajectory.points.size(); ++i){
         //traj_file <<  "Traj No.1 pathpoint " << i << std::endl;
@@ -172,34 +174,27 @@ void poseCallback()
                    << link_state_mh50_2.translation().transpose()
                    << link_state_mh50_3.translation().transpose()
                    << link_state_mh50_4.translation().transpose()
-                   << link_state_mh50_5.translation().transpose() ;
+                   << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 1 as trajectory line");
     visual_tools.publishAxisLabeled(target_pose, "pose1");
     visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_mh50);
     current_state_mh50->setJointGroupPositions(joint_model_group_mh50, my_plan.trajectory_.joint_trajectory.points.back().positions);
+    ros::Duration(2).sleep();
     visual_tools.publishRobotState(current_state_mh50);
     visual_tools.trigger();
     //visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
-    if (success){
-        move_group_mh50.execute(my_plan);
-        ROS_INFO_STREAM("manipulator Moving done.");
-    }
-    else{
-        ROS_WARN_STREAM("manipulator Moving failed.");
-    }
-    move_group_mh50.setStartStateToCurrentState();
-    //move_group_mh50.setStartState(*current_state_mh50);
+    move_group_mh50.setStartState(*current_state_mh50);
 
     moveit_msgs::OrientationConstraint ocm;
     ocm.link_name = "motoman_mh50_link_6_t";
     ocm.header.frame_id = "world";
     ocm.orientation.y = 1.0;
-    ocm.absolute_x_axis_tolerance = 0.2;
-    ocm.absolute_y_axis_tolerance = 0.2;
-    ocm.absolute_z_axis_tolerance = 0.2;
+    ocm.absolute_x_axis_tolerance = 0.1;
+    ocm.absolute_y_axis_tolerance = 0.1;
+    ocm.absolute_z_axis_tolerance = 0.1;
     ocm.weight = 1.0;
     moveit_msgs::Constraints test_constraints;
     test_constraints.orientation_constraints.push_back(ocm);
@@ -239,7 +234,7 @@ void poseCallback()
                   << link_state_mh50_2.translation().transpose()
                   << link_state_mh50_3.translation().transpose()
                   << link_state_mh50_4.translation().transpose()
-                  << link_state_mh50_5.translation().transpose() ;
+                  << link_state_mh50_5.translation().transpose() << std::endl;
 
     }
     visual_tools.deleteAllMarkers();
@@ -249,27 +244,16 @@ void poseCallback()
         waypoints[i].position.z += 0.15;
         visual_tools.publishAxisLabeled(waypoints[i], "pt" + std::to_string(i), rvt::SMALL);}
     visual_tools.publishPath(waypoints, rvt::LIME_GREEN, rvt::SMALL);
-    current_state_mh50->setJointGroupPositions(joint_model_group_mh50, trajectory.joint_trajectory.points.back().positions);
-    visual_tools.publishRobotState(current_state_mh50);
     visual_tools.trigger();
     //visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
-    my_plan.trajectory_ = trajectory;
-    if (success){
-        move_group_mh50.execute(my_plan);
-        ROS_INFO_STREAM("manipulator Moving done.");
-    }
-    else{
-        ROS_WARN_STREAM("manipulator Moving failed.");
-    }
-    move_group_mh50.setStartStateToCurrentState();
-    //move_group_mh50.setStartState(*current_state_mh50);
+    /**/
 
     gQuaternion.setRPY( 0,M_PI/2,  0);
     gQuaternion.normalize();
     std::vector<geometry_msgs::Pose> waypoints2;
     waypoints2.push_back(target_pose3);
 
-    target_pose3.position.y += 1.6;
+    target_pose3.position.y += 1.4;
     target_pose3.position.x -= 0.7;
     target_pose3.orientation.w = gQuaternion.w();
     target_pose3.orientation.x = gQuaternion.x();
@@ -302,41 +286,31 @@ void poseCallback()
                   << link_state_mh50_2.translation().transpose()
                   << link_state_mh50_3.translation().transpose()
                   << link_state_mh50_4.translation().transpose()
-                  << link_state_mh50_5.translation().transpose();
+                  << link_state_mh50_5.translation().transpose() << std::endl;
     }
 
     visual_tools.deleteAllMarkers();
     visual_tools.publishPath(waypoints2, rvt::LIME_GREEN, rvt::SMALL);
     current_state_mh50->setJointGroupPositions(joint_model_group_mh50, trajectory.joint_trajectory.points.back().positions);
     visual_tools.publishRobotState(current_state_mh50);
+
     visual_tools.trigger();
     //visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
-    my_plan.trajectory_ = trajectory;
-    if (success){
-        move_group_mh50.execute(my_plan);
-        ROS_INFO_STREAM("manipulator Moving done.");
-    }
-    else{
-        ROS_WARN_STREAM("manipulator Moving failed.");
-    }
-    move_group_mh50.setStartStateToCurrentState();
-    move_group_mh50.clearPathConstraints();
-    move_group_mh50.clearTrajectoryConstraints();
-    //move_group_mh50.setStartState(*current_state_mh50);
+    move_group_mh50.setStartState(*current_state_mh50);
     move_group_mh50.setJointValueTarget(jointValue);
-    //move_group_mh50.setRandomTarget();
+    move_group_mh50.setPlannerId("RRTConnect");
 
     success = (move_group_mh50.plan(my_plan) == moveit::planning_interface::MoveItErrorCode::SUCCESS);
 
     ROS_INFO_NAMED("tutorial", "Visualizing plan 4 (pose goal) %s", success ? "" : "FAILED");
+    current_state_mh50->enforceBounds();
     for(std::size_t j = 0; j < joint_names_mh50.size(); ++j){
         joint_group_positions_mh50[j] = trajectory.joint_trajectory.points.back().positions[j];
         current_state_mh50->setJointGroupPositions(joint_model_group_mh50, joint_group_positions_mh50);
         current_state_mh50->updateLinkTransforms();
         current_state_mh50->update();
     }
-    traj_file << std::endl;
     traj_file << std::endl;
     traj_file <<  link_state_mh50_0.translation().transpose()
                << link_state_mh50_1.translation().transpose()
@@ -349,19 +323,12 @@ void poseCallback()
     ROS_INFO_NAMED("tutorial", "Visualizing plan 4 as trajectory line");
     visual_tools.publishAxisLabeled(target_pose, "pose4");
     visual_tools.publishTrajectoryLine(my_plan.trajectory_, joint_model_group_mh50);
-    current_state_mh50->setJointGroupPositions(joint_model_group_mh50, my_plan.trajectory_.joint_trajectory.points.back().positions);
-    visual_tools.publishRobotState(current_state_mh50);
+    robot_state->setJointGroupPositions(joint_model_group_mh50, my_plan.trajectory_.joint_trajectory.points.back().positions);
+    ros::Duration(2).sleep();
+    visual_tools.publishRobotState(robot_state);
     visual_tools.trigger();
     //visual_tools.prompt("Press 'next' in the RvizVisualToolsGui window to continue the demo");
 
-    if (success){
-        move_group_mh50.execute(my_plan);
-        sleep(2.0);
-        ROS_INFO_STREAM("manipulator Moving done.");
-    }
-    else{
-        ROS_WARN_STREAM("manipulator Moving failed.");
-    }
 
     traj_file.close();
 }
